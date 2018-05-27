@@ -7,10 +7,19 @@ class DBHelper {
    * Database URL.
    * Change this to restaurants.json file location on your server.
    */
-  static get DATABASE_URL() {
+ /* static get DATABASE_URL() {
     const port = 8000 // Change this to your server port
-    return `http://localhost:${port}/data/restaurants.json`;
-  }
+    return `http://localhost:${port}/Seyma/mws-restaurant-stage-1/data/restaurants.json`;
+
+  }*/
+
+ static get DATABASE_URL() {
+    const port = 8000
+    return `http://localhost:${port}/data/restaurants.json`;}
+
+
+
+
 
   /**
    * Fetch all restaurants.
@@ -149,10 +158,18 @@ class DBHelper {
   /**
    * Restaurant image URL.
    */
-  static imageUrlForRestaurant(restaurant) {
+ 
+ static imageUrlForRestaurant(restaurant) {
     return (`/img/${restaurant.photograph}`);
   }
 
+
+ static Opt1ImageUrlForRestaurant(restaurant) {
+    return (`/img/${restaurant.photograph_opt1}`);
+  }
+  static Opt2ImageUrlForRestaurant(restaurant) {
+    return (`/img/${restaurant.photograph_opt2}`);
+  } 
   /**
    * Map marker for a restaurant.
    */
