@@ -24,5 +24,11 @@ In a terminal, check the version of Python you have: `python -V`. If you have Py
 
 Most of the code in this project has been written to the ES6 JavaScript specification for compatibility with modern web browsers and future proofing JavaScript code. As much as possible, try to maintain use of ES6 in any additional JavaScript you write. 
 
+***************************************************************************************
 
+Notes on what I have added to the static page to convert it to a mobile ready web application:
+For the first stage of the project I made the necessary changes to make it responsive
+and accesibility friendly. It should be tested with development tools for various screen sizes. 
+I also added a service worker with caching assets which should also be tested both
+aonline and offline.
 

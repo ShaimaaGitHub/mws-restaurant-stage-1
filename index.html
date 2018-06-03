@@ -15,18 +15,18 @@
    <a href="#skip"  class="skip-link">Skip to main content</a>
    <header role="banner">
     <nav  role ="navigation">
-      <h1><a href="/">Restaurant Reviews</a></h1>
+      <h1><a  href="/">Restaurant Reviews</a></h1>
     </nav>
   </header>
 
-  <main role ="main" id="maincontent">
-    <section id="map-container" aria-label= "Google Map" aria-hidden="true">
-      <div role="application" id="map"></div>
+  <main role ="main" id="maincontent" tabindex="0">
+    <section id="map-container" aria-label= "Google Map" aria-hidden="true" >
+      <div  role="application" id="map" ></div>
     </section>
-    <section  id="skip"  aria-label="Restaurant Information Selection">
-      <div class="filter-options">
+    <section    aria-label="Restaurant Information Selection">
+      <div  id="skip" class="filter-options" >
         <h2>Filter Results</h2> 
-          <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
+          <select   id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
             <option value="all">All Neighborhoods</option>
           </select>
           <select id="cuisines-select" name="cuisines" onchange="updateRestaurants()">
@@ -46,7 +46,7 @@
             console.log('Service worker not supported');
             return;
         }
-        navigator.serviceWorker.register('sw.js')
+        navigator.serviceWorker.register('./sw.js')
               .then(function() {
                     console.log('Registered');
               })
