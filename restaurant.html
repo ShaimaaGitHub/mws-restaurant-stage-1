@@ -20,9 +20,11 @@
       <h1><a href="/">Restaurant Reviews</a></h1>
     </nav>
     <!-- Beginning breadcrumb -->
-    <ol id="breadcrumb"  aria-label="breadcrumb navigation" role="navigation">
-      <li><a href="/">Home</a></li>
-    </ol>
+    <nav aria-label="Breadcrumb" >
+       <ol id="breadcrumb" >
+          <li><a href="/">Home</a></li>
+       </ol>
+    </nav>
     <!-- End breadcrumb -->
     <!-- End nav -->
   </header>
@@ -39,8 +41,8 @@
     <!-- End map -->
    <!-- <h1 id="restaurant-name"></h1> -->
     <!-- Beginning restaurant -->
-    <section id="restaurant-container"  aria-label="Detailed Restaurant Information" >
-      <h1 id="restaurant-name"></h1>
+    <section id="restaurant-container"  aria-label="Detailed Restaurant Information" tabindex="0">
+      <h3 id="restaurant-name"></h3>
       <img id="restaurant-img">
       <p id="restaurant-cuisine"></p>
       <p id="restaurant-address"></p>
@@ -63,6 +65,24 @@
   <!-- End footer -->
 
   <!-- Beginning scripts -->
+  <script>
+      (function() {
+        'use strict';
+
+        if (!('serviceWorker' in navigator)) {
+            console.log('Service worker not supported');
+            return;
+        }
+        navigator.serviceWorker.register('./sw.js')
+              .then(function() {
+                    console.log('Registered (Restaurant page)');
+              })
+              .catch(function(error) {
+                    console.log('Registration failed(Restaurant page) :', error);
+              });
+
+     })();
+    </script>
   <!-- Database helpers -->
   <script type="text/javascript" src="js/dbhelper.js"></script>
   <!-- Main javascript file -->
