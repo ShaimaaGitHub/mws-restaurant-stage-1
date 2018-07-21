@@ -1,0 +1,14 @@
+{
+  "name": "Restaurant Reviews",
+  "short_name": "Site 😎",
+  "description": "Search for restaurants of your taste in NY",
+  "display": "standalone",
+  "start_url": "/index.html",
+  "background_color": "#000000",
+  "theme_color": "#0f4a73",
+  "icons": [{
+    "src": "restaurant.png",
+    "sizes": "512x512",
+    "type": "image/png"
+  }]
+}

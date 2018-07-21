@@ -2,23 +2,32 @@
 (function() {
      'use strict'; 
 
+ //    importScripts("./idb.js");
+
+      console.log("service workerdayım");
+
       var filesToCache = [
           '/',
           'css/styles.css',
           'css/responsive.css',
+          'manifest.json',
           'index.html',
           'restaurant.html',
+          "./idb.js",
           'js/dbhelper.js',
           'js/main.js',
-          'js/restaurant_info.js',
-          'data/restaurants.json'
+          'js/restaurant_info.js'
+      //    'data/restaurants.json'
         
       ]; 
-      console.log("filesToCache : " + filesToCache);
+
+   
+
+     console.log("filesToCache : " + filesToCache);
       var staticCacheName = 'cache-v1';
 
       self.addEventListener('install', function(event) {
-           console.log('Attempting to install service worker and cache static assets');
+           console.log('Attempting to install service worker and cache static assets'); 
            event.waitUntil(caches.open(staticCacheName).then(function(cache) {
                      return cache.addAll(filesToCache); }))
     });
@@ -30,7 +39,7 @@
                     let responseClone = responseNetwork.clone();
                     caches.open(staticCacheName).then(function(cache) {
                          cache.put(event.request, responseClone);
-                         console.log("cloning :" , responseClone);
+                        // console.log("cloning :" , responseClone);
                     });
                     return responseNetwork;
                   });
@@ -38,9 +47,10 @@
                     console.log("No matched cache found : " ,  error);
                  })
            );
-     });
+     }) 
 
-     self.addEventListener("activate", function(event) {
+   
+    self.addEventListener("activate", function(event) {
          console.log("Serviceworker Activation");
          event.waitUntil(
            caches.keys().then(function(keyList) {
@@ -53,13 +63,14 @@
           })
 
         );
-    });
+    }); 
 
-    }) ()
+    }) ()  
+
+    
 
 
 
-//});}) () //
 
 
   

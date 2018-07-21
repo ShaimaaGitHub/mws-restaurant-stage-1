@@ -33,7 +33,9 @@ fetchRestaurantFromURL = (callback) => {
     error = 'No restaurant id in URL'
     callback(error, null);
   } else {
+    console.log("rest-info.js");
     DBHelper.fetchRestaurantById(id, (error, restaurant) => {
+      console.log("rest-info rest ", restaurant);
       self.restaurant = restaurant;
       if (!restaurant) {
         console.error(error);

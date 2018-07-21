@@ -5,9 +5,11 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="utf-8"	>
+  <meta name="theme-color" content="#317EFB"/>
+  <link rel="manifest" href="./manifest.json" />
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />  
   <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/responsive.css" >
   <title>Restaurant Reviews</title>
 </head>
 
@@ -26,10 +28,10 @@
     <section    aria-label="Restaurant Information Selection">
       <div  id="skip" class="filter-options" >
         <h2>Filter Results</h2> 
-          <select   id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
+          <select   id="neighborhoods-select" name="neighborhoods" aria-label="Selecting a neighborhood" onchange="updateRestaurants()">
             <option value="all">All Neighborhoods</option>
           </select>
-          <select id="cuisines-select" name="cuisines" onchange="updateRestaurants()">
+          <select id="cuisines-select" name="cuisines" aria-label ="Selecting a cuisine type" onchange="updateRestaurants()">
              <option value="all">All Cuisines</option>
           </select>
       </div>
@@ -37,7 +39,10 @@
     </section>
   </main>
   
-  
+ 
+  <script type="application/javascript" charset="utf-8"src="./idb.js"></script>
+
+
   <script>
       (function() {
         'use strict';
@@ -48,17 +53,17 @@
         }
         navigator.serviceWorker.register('./sw.js')
               .then(function() {
-                    console.log('Registered');
+                    console.log('Registered ');
               })
               .catch(function(error) {
                     console.log('Registration failed:', error);
               });
 
      })();
-    </script>
+    </script> 
 
-  <script type="application/javascript" charset="utf-8" src="js/dbhelper.js"></script>
-  <script type="application/javascript" charset="utf-8" src="js/main.js"></script>
+  <script async defer type="application/javascript" charset="utf-8" src="js/dbhelper.js"></script>
+  <script async defer type="application/javascript" charset="utf-8" src="js/main.js"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDk3qMIfmUS3IpGgDZ6sD9dWwBJv6Ffftc&libraries=places&callback=initMap"></script>
 
 
