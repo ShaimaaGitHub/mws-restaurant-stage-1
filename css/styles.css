@@ -46,8 +46,10 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
 
  }
 #footer {
-  background-color: #444;
-  color: #aaa;
+/*  background-color: #444;
+  color: #aaa; */
+  background-color: #333333;
+  color: #f7f7f7;
   font-size: 8pt;
   letter-spacing: 1px;
   padding: 25px;
@@ -240,7 +242,8 @@ nav h1 a {
   width: 100%; /*50 */
 }
 #restaurant-name {
-  color: #f18200;%;
+/*  color: #f18200;%;  */
+  color: #f04800;%;
   font-family: Arial,sans-serif;
   font-size: 20pt;
   font-weight: 200;

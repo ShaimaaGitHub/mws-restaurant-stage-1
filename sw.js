@@ -1,12 +1,9 @@
 
-(function() {
-     'use strict'; 
+(function () {
+    'use strict'; 
+    console.log("service workerdayım");
 
- //    importScripts("./idb.js");
-
-      console.log("service workerdayım");
-
-      var filesToCache = [
+    var filesToCache = [
           '/',
           'css/styles.css',
           'css/responsive.css',
@@ -20,11 +17,11 @@
       //    'data/restaurants.json'
         
       ]; 
-
    
 
      console.log("filesToCache : " + filesToCache);
       var staticCacheName = 'cache-v1';
+
 
       self.addEventListener('install', function(event) {
            console.log('Attempting to install service worker and cache static assets'); 
@@ -32,25 +29,8 @@
                      return cache.addAll(filesToCache); }))
     });
 
-      self.addEventListener('fetch', function(event) {
-           event.respondWith(
-              caches.match(event.request).then(function(responseCache) {
-                return responseCache || fetch(event.request).then(function(responseNetwork) {
-                    let responseClone = responseNetwork.clone();
-                    caches.open(staticCacheName).then(function(cache) {
-                         cache.put(event.request, responseClone);
-                        // console.log("cloning :" , responseClone);
-                    });
-                    return responseNetwork;
-                  });
-              }).catch(function(error) {
-                    console.log("No matched cache found : " ,  error);
-                 })
-           );
-     }) 
 
-   
-    self.addEventListener("activate", function(event) {
+      self.addEventListener("activate", function(event) {
          console.log("Serviceworker Activation");
          event.waitUntil(
            caches.keys().then(function(keyList) {
@@ -65,7 +45,50 @@
         );
     }); 
 
-    }) ()  
+
+    self.addEventListener('fetch', function(event) {
+                          
+             event.respondWith(
+           
+               caches.match(event.request)
+                 .then(function(response) {
+
+                    if(response){
+                     return response;
+                    }
+
+                    var fetchRequest = event.request.clone();
+
+                    return fetch(fetchRequest).then(
+                         function(response) {
+                           if(!response || response.status !== 200 || response.type !== 'basic') {
+                               
+                               return response;
+                            }
+
+           
+                           var responseToCache = response.clone();
+                           
+                           caches.open(staticCacheName)
+                                  .then(function(cache) {
+                                       cache.put(event.request, responseToCache);
+                                  });
+
+                           return response;
+                         })
+                        .catch(function(err){
+                           console.log(" catch : "  , err);
+                           return new Response ();
+
+                        })
+                                               
+                  }) //match
+                ); //respondwith
+             });  
+                          
+
+   
+  }) ()  
 
     
 
