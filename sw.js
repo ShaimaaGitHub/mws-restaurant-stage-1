@@ -1,7 +1,7 @@
 
 (function () {
     'use strict'; 
-    console.log("service workerdayım");
+    console.log("service worker");
 
     var filesToCache = [
           '/',
@@ -23,71 +23,78 @@
       var staticCacheName = 'cache-v1';
 
 
-      self.addEventListener('install', function(event) {
-           console.log('Attempting to install service worker and cache static assets'); 
-           event.waitUntil(caches.open(staticCacheName).then(function(cache) {
-                     return cache.addAll(filesToCache); }))
-    });
+        self.addEventListener('install', function(event) {
+                console.log('Attempting to install service worker and cache static assets'); 
+                event.waitUntil(caches.open(staticCacheName).then(function(cache) {
+                        return cache.addAll(filesToCache); }
+                 ))
+        });
 
 
-      self.addEventListener("activate", function(event) {
-         console.log("Serviceworker Activation");
-         event.waitUntil(
-           caches.keys().then(function(keyList) {
-               return Promise.all(keyList.map(function(key) {
-                    if  (key !== staticCacheName) {
-                      console.log("ServiceWorker : Removing old cache shell", key);
-                      return caches.delete(key);
-                    }
-               }));
-          })
+        self.addEventListener("activate", function(event) {
+             console.log("Serviceworker Activation");
+             event.waitUntil(
+               caches.keys().then(function(keyList) {
+                  return Promise.all(keyList.map(function(key) {
+                      if  (key !== staticCacheName) {
+                           console.log("ServiceWorker : Removing old cache shell", key);
+                           return caches.delete(key);
+                      }
+                  }));
+               })
 
-        );
-    }); 
+             ); //waituntil
+         }); 
 
 
-    self.addEventListener('fetch', function(event) {
-                          
-             event.respondWith(
-           
-               caches.match(event.request)
-                 .then(function(response) {
 
-                    if(response){
-                     return response;
-                    }
 
-                    var fetchRequest = event.request.clone();
-
-                    return fetch(fetchRequest).then(
-                         function(response) {
-                           if(!response || response.status !== 200 || response.type !== 'basic') {
-                               
-                               return response;
-                            }
-
-           
-                           var responseToCache = response.clone();
-                           
-                           caches.open(staticCacheName)
-                                  .then(function(cache) {
-                                       cache.put(event.request, responseToCache);
-                                  });
-
-                           return response;
+           self. addEventListener("fetch", function(event) {
+                let reqURL = new URL(event.request.url);
+  
+               if (reqURL.pathname === "/" || reqURL.pathname === "/index.html") {
+                     event.respondWith(
+                     caches.open(staticCacheName).then(function(cache) {
+                         return cache.match("/index.html").then(function(cachedResponse) {
+                                let fetchPromise = fetch("/index.html")
+                               .then(function(networkResponse) {
+                                   let nwResponse = networkResponse.clone();
+                                   cache.put("/index.html", nwResponse);
+                                   return networkResponse;
+                               });
+                          return cachedResponse || fetchPromise;
+                        });
+                     })
+                    ); //respondWith
+                 } //if
+               else if (reqURL.pathname === "/restaurant.html") {
+                    event.respondWith(
+                    caches.open(staticCacheName).then(function(cache) {
+                        return cache.match("/restaurant.html").then(function(cachedResponse) {
+                               let fetchPromise = fetch("/restaurant.html")
+                               .then(function(networkResponse) {
+                                   let nwResponse = networkResponse.clone();
+                                   cache.put("/restaurant.html", nwResponse);
+                                   return networkResponse;
+                               });
+                          return cachedResponse || fetchPromise;
+                        });
+                     })
+                    ); //respondWith
+                  } // else if
+               else if (filesToCache.includes(reqURL.href) || filesToCache.includes(reqURL.pathname))
+                    {
+                       event.respondWith(
+                       caches.open(staticCacheName).then(function(cache) {
+                         return cache.match(event.request).then(function(response) {
+                           return response || fetch(event.request);
+                          });
                          })
-                        .catch(function(err){
-                           console.log(" catch : "  , err);
-                           return new Response ();
+                       ); //respond With
+                    } //elseif
+          }); 
 
-                        })
-                                               
-                  }) //match
-                ); //respondwith
-             });  
-                          
-
-   
+ 
   }) ()  
 
     
