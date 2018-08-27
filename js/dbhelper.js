@@ -24,13 +24,19 @@ class DBHelper {
   static fetchRestaurants(callback) {
        let fetchUrl= DBHelper.DATABASE_URL;
         
-       const dbPromise = idb.open("restdb",1, function(db){
+       const dbPromise = idb.open("restdb", 1 , function(db){
                 if (!db.objectStoreNames.contains("restaurants")) {
                    db.createObjectStore("restaurants",{keyPath : "id"}); 
                    console.log(" db created!");                   
                 }
+                if (!db.objectStoreNames.contains('reviewsDb')) {
+                   console.log("yok işte");
+                   const reviewStore= db.createObjectStore("reviews",{keyPath : "id"});
+                   reviewStore.createIndex("restaurant","restaurant_id");
+                }
                 console.log("if çıkışı");
               });
+
 
        
         dbPromise
@@ -97,6 +103,33 @@ class DBHelper {
       }
     });
   }
+
+/*static fetchReviews(restaurantId, callback) {
+    // 
+    const port=1337;
+    
+
+    fetch( `http://localhost:${port}/reviews/?restaurant_id=${restaurantId}`)
+                   .then(function(response) {
+                      console.log("json review response", response);
+                      return response.json();
+                   })  
+                   .then(data=> {
+                        let reviews=data;
+                        console.log(" all reviews fetched ", reviews);
+                        callback(null,reviews);})
+                       // return reviews}); 
+      
+    
+   }*/
+      
+
+
+
+
+
+
+
 
   /**
    * Fetch restaurants by a cuisine type with proper error handling.
@@ -195,7 +228,41 @@ class DBHelper {
    */
   static urlForRestaurant(restaurant) {
      return (`./restaurant.html?id=${restaurant.id}`);
+
   }
+
+ // Update favoriteness */
+
+  static changeFavStat (restaurantId,isFavorite){
+      const dbPromise = idb.open("restdb",1, function(db){
+                if (!db.objectStoreNames.contains("restaurants")) {
+                   db.createObjectStore("restaurants",{keyPath : "id"}); 
+                   console.log(" db created! fav");                   
+                }
+                console.log("if çıkışı fav");
+              });
+      console.log("cfs 1 " + restaurantId , isFavorite);
+      fetch(`http://localhost:1337/restaurants/${restaurantId}/?is_favorite=${isFavorite}`,{method : 'PUT'}) 
+        .then(()=> {console.log("cfs 2 " + restaurantId , isFavorite);
+         dbPromise
+            .then(db=> { 
+                  console.log("dbye bakalım ", isFavorite) ; 
+                  const tx=db.transaction("restaurants", "readwrite");
+                  const store=tx.objectStore("restaurants");
+                   store.get(restaurantId)
+                    .then(restaurant=>{
+                        console.log("idb değişmeden " , restaurant.is_favorite);
+                        restaurant.is_favorite=isFavorite;
+                        store.put(restaurant);
+                        console.log("fav idb");
+
+                    }) // get then 
+                     
+            }) // dbpromise then 
+            
+        })  //fetch then
+      
+    }
 
   /**
    * Restaurant image URL.

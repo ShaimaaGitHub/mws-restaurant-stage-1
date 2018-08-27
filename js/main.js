@@ -96,7 +96,7 @@ updateRestaurants = () => {
 
   const cuisine = cSelect[cIndex].value;
   const neighborhood = nSelect[nIndex].value;
-
+ 
   DBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, (error, restaurants) => {
     if (error) { // Got an error!
       console.error(error);
@@ -133,10 +133,12 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
   addMarkersToMap();
 }
 
+
 /**
  * Create restaurant HTML.
  */
 createRestaurantHTML = (restaurant) => {
+ 
   const li = document.createElement('li');
 
   const image = document.createElement('img');
@@ -157,6 +159,30 @@ createRestaurantHTML = (restaurant) => {
   name.innerHTML = restaurant.name;
   li.append(name);
 
+  const button = document.createElement('button');
+  if (!restaurant.is_favorite) {
+     console.log("isnot:favorite", restaurant.id," ", restaurant.is_favorite);
+     button.id="heartWhite";
+   }else {
+     button.id="heartRed";
+     console.log("is:favorite");
+   }
+  
+  button.onclick= function(){
+    console.log("onclick");
+    if (restaurant.is_favorite == "true") {
+     console.log("true==>false ", restaurant.id," ", restaurant.is_favorite);
+     restaurant.is_favorite="false";
+     button.id="heartWhite";
+   }else {
+    console.log("false==>true ", restaurant.id," ", restaurant.is_favorite);
+     restaurant.is_favorite="true";
+     button.id="heartRed";
+     }
+     DBHelper.changeFavStat(restaurant.id,restaurant.is_favorite);
+   };
+  li.append(button);
+
   const neighborhood = document.createElement('p');
   neighborhood.innerHTML = restaurant.neighborhood;
   li.append(neighborhood);
@@ -171,6 +197,7 @@ createRestaurantHTML = (restaurant) => {
   li.append(more);
   return li
 }
+
 
 /**
  * Add markers for current restaurants to the map.

@@ -7,6 +7,7 @@
           '/',
           'css/styles.css',
           'css/responsive.css',
+          'css/form.css',
           'manifest.json',
           'index.html',
           'restaurant.html',
